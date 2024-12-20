@@ -38,108 +38,115 @@ const LOCALIDADES = {
 };
 
 const TECNICOS = [
-  { id: '1', nombre: 'Juan Pérez', telefono: '549116789', zona: 'Norte' },
-  { id: '2', nombre: 'María García', telefono: '549118765', zona: 'Sur' },
-  { id: '3', nombre: 'Carlos López', telefono: '549114532', zona: 'Oeste' }
+  { id: '1', nombre: 'Marcelo Aragona', telefono: '5491141727102', zona: 'Norte' },
+  { id: '2', nombre: 'Luis Ocaranza', telefono: '5491168558668', zona: 'Sur' },
+  { id: '3', nombre: 'Marcos Gonzalez', telefono: '5491151434299', zona: 'Oeste' },
+  { id: '4', nombre: 'Matias Canne', telefono: '5491158364530', zona: 'Este' },
+  { id: '5', nombre: 'Miguel Miño', telefono: '5491155807948', zona: 'Norte' },
+  { id: '6', nombre: 'Andres Oliva', telefono: '5491134689392', zona: 'Sur' },
+  { id: '7', nombre: 'Pedro Febre', telefono: '5491161518774', zona: 'Oeste' },
+  { id: '8', nombre: 'Leandro', telefono: '5491124818498', zona: 'Este' }
 ];
+
 const OrdenesApp = () => {
-    // Cargar datos del localStorage al iniciar
-    const [clientes, setClientes] = useState(() => {
-      const savedClientes = localStorage.getItem('clientes');
-      return savedClientes ? JSON.parse(savedClientes) : [];
-    });
-  
-    const [tecnicoSeleccionado, setTecnicoSeleccionado] = useState('');
-    const [nuevoCliente, setNuevoCliente] = useState({
-      nombre: '',
-      telefono: '',
-      direccion: '',
-      entreCalles: '',
-      localidad: '',
-      horario: '',
-      problema: ''
-    });
-  
-    // Guardar en localStorage cuando cambian los clientes
-    useEffect(() => {
-      localStorage.setItem('clientes', JSON.stringify(clientes));
-    }, [clientes]);
-  
-    const agregarCliente = () => {
-      if (nuevoCliente.nombre && nuevoCliente.direccion && nuevoCliente.localidad) {
-        setClientes([...clientes, { ...nuevoCliente, id: Date.now() }]);
-        setNuevoCliente({
-          nombre: '',
-          telefono: '',
-          direccion: '',
-          entreCalles: '',
-          localidad: '',
-          horario: '',
-          problema: ''
-        });
-      }
-    };
-  
-    const eliminarCliente = (id) => {
-      setClientes(clientes.filter(cliente => cliente.id !== id));
-    };
-  
-    const enviarPorWhatsApp = () => {
-      const tecnico = TECNICOS.find(t => t.id === tecnicoSeleccionado);
-      if (!tecnico || clientes.length === 0) return;
-  
-      let mensaje = "🔧 *Rutina de trabajo - Control de Vectores*\n\n";
-      clientes.forEach((cliente, index) => {
-        mensaje += `*Cliente ${index + 1}:*\n`;
-        mensaje += `📝 Nombre: ${cliente.nombre}\n`;
-        mensaje += `📞 Teléfono: ${cliente.telefono}\n`;
-        mensaje += `📍 Dirección: ${cliente.direccion}\n`;
-        mensaje += `🏘️ Entre calles: ${cliente.entreCalles}\n`;
-        mensaje += `🌎 Localidad: ${cliente.localidad}\n`;
-        mensaje += `🕒 Horario: ${cliente.horario}\n`;
-        mensaje += `⚠️ Problema: ${cliente.problema}\n\n`;
+  // Cargar datos del localStorage al iniciar
+  const [clientes, setClientes] = useState(() => {
+    const savedClientes = localStorage.getItem('clientes');
+    return savedClientes ? JSON.parse(savedClientes) : [];
+  });
+
+  const [tecnicoSeleccionado, setTecnicoSeleccionado] = useState('');
+  const [nuevoCliente, setNuevoCliente] = useState({
+    nombre: '',
+    telefono: '',
+    direccion: '',
+    entreCalles: '',
+    localidad: '',
+    horario: '',
+    problema: ''
+  });
+
+  // Guardar en localStorage cuando cambian los clientes
+  useEffect(() => {
+    localStorage.setItem('clientes', JSON.stringify(clientes));
+  }, [clientes]);
+
+  const agregarCliente = () => {
+    if (nuevoCliente.nombre && nuevoCliente.direccion && nuevoCliente.localidad) {
+      setClientes([...clientes, { ...nuevoCliente, id: Date.now() }]);
+      setNuevoCliente({
+        nombre: '',
+        telefono: '',
+        direccion: '',
+        entreCalles: '',
+        localidad: '',
+        horario: '',
+        problema: ''
       });
-  
-      const mensajeCodificado = encodeURIComponent(mensaje);
-      window.open(`https://api.whatsapp.com/send?phone=${tecnico.telefono}&text=${mensajeCodificado}`, '_blank');
-    };
-    return (
-        <Container maxWidth="lg" sx={{ py: 4 }}>
-          {/* Logo y Título */}
-          <Box sx={{ textAlign: 'center', mb: 4 }}>
-            <img 
-              src="/api/placeholder/200/80" 
-              alt="Logo San Isidro" 
-              style={{ height: '80px', marginBottom: '1rem' }}
+    }
+  };
+
+  const eliminarCliente = (id) => {
+    setClientes(clientes.filter(cliente => cliente.id !== id));
+  };
+
+  const enviarPorWhatsApp = () => {
+    const tecnico = TECNICOS.find(t => t.id === tecnicoSeleccionado);
+    if (!tecnico || clientes.length === 0) return;
+
+    let mensaje = "🔧 *Rutina de trabajo - Control de Vectores*\n\n";
+    clientes.forEach((cliente, index) => {
+      mensaje += `*Cliente ${index + 1}:*\n`;
+      mensaje += `📝 Nombre: ${cliente.nombre}\n`;
+      mensaje += `📞 Teléfono: ${cliente.telefono}\n`;
+      mensaje += `📍 Dirección: ${cliente.direccion}\n`;
+      mensaje += `🏘️ Entre calles: ${cliente.entreCalles}\n`;
+      mensaje += `🌎 Localidad: ${cliente.localidad}\n`;
+      mensaje += `🕒 Horario: ${cliente.horario}\n`;
+      mensaje += `⚠️ Problema: ${cliente.problema}\n\n`;
+    });
+
+    const mensajeCodificado = encodeURIComponent(mensaje);
+    window.open(`https://api.whatsapp.com/send?phone=${tecnico.telefono}&text=${mensajeCodificado}`, '_blank');
+  };
+
+  return (
+    <Container maxWidth="lg" sx={{ py: 4 }}>
+      {/* Logo y Título */}
+      <Box sx={{ textAlign: 'center', mb: 4 }}>
+        <img 
+          src="/api/placeholder/200/80" 
+          alt="Logo San Isidro" 
+          style={{ height: '80px', marginBottom: '1rem' }}
+        />
+        <Typography variant="h4" component="h1" gutterBottom color="primary">
+          Gestión de Ordenes de Trabajo - Control de Vectores
+        </Typography>
+      </Box>
+
+      {/* Formulario de nuevo cliente */}
+      <Paper elevation={3} sx={{ p: 3, mb: 4 }}>
+        <Typography variant="h6" gutterBottom>
+          Nuevo Cliente
+        </Typography>
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={6}>
+            <TextField
+              fullWidth
+              label="Nombre del Cliente"
+              value={nuevoCliente.nombre}
+              onChange={(e) => setNuevoCliente({...nuevoCliente, nombre: e.target.value})}
             />
-            <Typography variant="h4" component="h1" gutterBottom color="primary">
-              Gestión de Ordenes de Trabajo - Control de Vectores
-            </Typography>
-          </Box>
-    
-          {/* Formulario de nuevo cliente */}
-          <Paper elevation={3} sx={{ p: 3, mb: 4 }}>
-            <Typography variant="h6" gutterBottom>
-              Nuevo Cliente
-            </Typography>
-            <Grid container spacing={2}>
-              <Grid item xs={12} md={6}>
-                <TextField
-                  fullWidth
-                  label="Nombre del Cliente"
-                  value={nuevoCliente.nombre}
-                  onChange={(e) => setNuevoCliente({...nuevoCliente, nombre: e.target.value})}
-                />
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <TextField
-                  fullWidth
-                  label="Teléfono"
-                  value={nuevoCliente.telefono}
-                  onChange={(e) => setNuevoCliente({...nuevoCliente, telefono: e.target.value})}
-                />
-              </Grid>
-              <Grid item xs={12}>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <TextField
+              fullWidth
+              label="Teléfono"
+              value={nuevoCliente.telefono}
+              onChange={(e) => setNuevoCliente({...nuevoCliente, telefono: e.target.value})}
+            />
+          </Grid>
+          <Grid item xs={12}>
             <FormControl fullWidth>
               <InputLabel>Localidad</InputLabel>
               <Select
@@ -215,6 +222,7 @@ const OrdenesApp = () => {
           </Button>
         </Box>
       </Paper>
+
       {/* Lista de clientes */}
       {clientes.length > 0 && (
         <Paper elevation={3} sx={{ p: 3, mb: 4 }}>
